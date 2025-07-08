@@ -8,12 +8,25 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Plan:
+        // 1. Create a new array of doubles with the specified length.
+        // 2. Loop from index 0 up to length -1.
+        //    a. For each index i, compute the i-th multiple as (i + 1) * number.
+        //    b. Store the computed multiple in the array at index i.
+        // 3. After filling the array, return it.
 
-        return []; // replace this return statement with your own
+        // Step 1: initialize the result array.
+        double[] result = new double[length];
+
+        // Step 2: fill each position with the appropriate multiple.
+        for (int i = 0; i < length; i++)
+        {
+            // {i + 1} gives the 1-based multiple count.
+            result[i] = number * (i + 1);
+        }
+
+        // Step 3: Return the populated array.
+        return result;
     }
 
     /// <summary>
@@ -25,9 +38,30 @@ public static class Arrays
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Plan:
+        // 1. Determine the effective rotation by taking amount modulo data.Count.
+        // 2. If effective rotation is 0, no change needed.
+        // 3. Otherwise, perform rotation:
+        //    a. Copy the last 'amount' elements into a temporary List.
+        //    b. Shift the remaining elements right by amount positions.
+        //    c. Copy the temporary elements into the start of the List.
+
+        // Step 1: Determine the effective rotation.
+        int count = data.Count;
+        int k = amount % count; // handles cases where amount == count
+
+        // Step 2: if k is 0, no rotation needed.
+        if (k == 0) return;
+
+        // Step 3a: Copy the original list.
+        List<int> original = new List<int>(data);
+
+        // Step 3b: place each element at its new rotated index.
+        for (int i = 0; i < count; i++)
+        {
+            // (i + k) modulo count gives the new position.
+            data[(i + k) % count] = original[i];
+        }
+
     }
 }
