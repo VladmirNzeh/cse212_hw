@@ -7,7 +7,7 @@
         // Expected Result: It should display 100
         Console.WriteLine("Test 1");
         var queue = new SimpleQueueSolution();
-        queue.Enqueue(100);
+        queue.Enqueue(100);    
         var value = queue.Dequeue();
         Console.WriteLine(value);
         // Defect(s) Found: Trying to remove data from index 1 rather than 0
