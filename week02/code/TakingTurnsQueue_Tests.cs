@@ -21,7 +21,7 @@ public class TakingTurnsQueueTests
         Person[] expectedResult = [bob, tim, sue, bob, tim, sue, tim, sue, tim, tim];
 
         var players = new TakingTurnsQueue();
-        players.AddPerson(bob.Name, bob.Turns);
+        players.AddPerson(bob.Name,  bob.Turns);
         players.AddPerson(tim.Name, tim.Turns);
         players.AddPerson(sue.Name, sue.Turns);
 
@@ -32,7 +32,7 @@ public class TakingTurnsQueueTests
             {
                 Assert.Fail("Queue should have ran out of items by now.");
             }
-
+ 
             var person = players.GetNextPerson();
             Assert.AreEqual(expectedResult[i].Name, person.Name);
             i++;
