@@ -1,11 +1,11 @@
 /// <summary>
-/// This queue is circular.  When people are added via AddPerson, then they are added to the 
-/// back of the queue (per FIFO rules).  When GetNextPerson is called, the next person
-/// in the queue is saved to be returned and then they are placed back into the back of the queue.  Thus,
-/// each person stays in the queue and is given turns.  When a person is added to the queue, 
-/// a turns parameter is provided to identify how many turns they will be given.  If the turns is 0 or
-/// less than they will stay in the queue forever.  If a person is out of turns then they will 
-/// not be added back into the queue.
+/// This queue is circular. When people are added via AddPerson, they are added to the 
+/// back of the queue (FIFO). When GetNextPerson is called, the next person in the queue 
+/// is returned and may be placed back in the queue depending on their turns value.
+/// People with:
+///   - turns <= 0 stay in the queue infinitely,
+///   - turns > 1 are decremented and re-added,
+///   - turns == 1 are not added back (they are done).
 /// </summary>
 public class TakingTurnsQueue
 {
@@ -14,10 +14,10 @@ public class TakingTurnsQueue
     public int Length => _people.Length;
 
     /// <summary>
-    /// Add new people to the queue with a name and number of turns
+    /// Adds a new person with a specified number of turns.
     /// </summary>
-    /// <param name="name">Name of the person</param>
-    /// <param name="turns">Number of turns remaining</param>
+    /// <param name="name">The name of the person</param>
+    /// <param name="turns">The number of turns (0 or less = infinite)</param>
     public void AddPerson(string name, int turns)
     {
         var person = new Person(name, turns);
@@ -25,11 +25,17 @@ public class TakingTurnsQueue
     }
 
     /// <summary>
-    /// Get the next person in the queue and return them. The person should
-    /// go to the back of the queue again unless the turns variable shows that they 
-    /// have no more turns left.  Note that a turns value of 0 or less means the 
-    /// person has an infinite number of turns.  An error exception is thrown 
-    /// if the queue is empty.
+    /// Retrieves the next person in the queue based on circular logic.
+    /// 
+    /// and people with infinite turns (turns <= 0) are never removed.
+    /// 
+    /// In the original logic, people with finite turns were not always removed
+    /// after using all their turns. For example, Sue (with 1 turn) was being returned
+    /// again even after she should have exited the queue.
+    /// 
+    ///   - If person has turns <= 0: re-added to queue forever.
+    ///   - If person has turns > 1: decrement and re-add.
+    ///   - If person has turns == 1: do not re-add.
     /// </summary>
     public Person GetNextPerson()
     {
@@ -40,23 +46,24 @@ public class TakingTurnsQueue
 
         Person person = _people.Dequeue();
 
-        // Create a copy to return to the test to preserve the original turns value.
+        // Copy created to preserve original number of turns for test validation
         Person returnCopy = new Person(person.Name, person.Turns);
 
-        // HAndle infinite turns (0 or less)
         if (person.Turns <= 0)
         {
+            // Infinite turns — always re-add to the queue
             _people.Enqueue(person);
         }
         else if (person.Turns > 1)
         {
+            // Reduce turn count and re-add
             person.Turns -= 1;
             _people.Enqueue(person);
         }
+        // If turns == 1: do not re-add; person exits the queue
 
-        // if Turns == 1, don't re-add to queue.
-            return returnCopy;
-        }
+        return returnCopy;
+    }
 
     public override string ToString()
     {
