@@ -54,7 +54,7 @@ public class TakingTurnsQueue
             _people.Enqueue(person);
         }
 
-        // if Turns == 1, don't re-add to queue. 
+        // if Turns == 1, don't re-add to queue.
             return returnCopy;
         }
 
