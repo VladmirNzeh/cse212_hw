@@ -66,14 +66,14 @@ public class LinkedList : IEnumerable<int>
     public void RemoveTail()
     {
         if (_tail == _head)
-        {
+        { 
             _head = null;
             _tail = null;
         }
         else if (_tail is not null)
         {
             _tail.Prev!.Next = null;
-            _tail = _tail.Prev;
+            _tail = _tail.Prev;   
         }
     }
 
@@ -197,10 +197,10 @@ public class LinkedList : IEnumerable<int>
     public Boolean HeadAndTailAreNotNull()
     {
         return _head is not null && _tail is not null;
-    }
+    } 
 }
 
-public static class IntArrayExtensionMethods {
+public static class IntArrayExtensionMethods { 
     public static string AsString(this IEnumerable array) {
         return "<IEnumerable>{" + string.Join(", ", array.Cast<int>()) + "}";
     }
